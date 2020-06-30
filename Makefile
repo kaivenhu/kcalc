@@ -3,8 +3,9 @@ KDIR=/lib/modules/$(shell uname -r)/build
 obj-m += calc.o
 obj-m += livepatch-calc.o
 calc-objs += main.o expression.o
-livepatch-calc-objs += live-calc.o
-ccflags-y := -std=gnu99 -Wno-declaration-after-statement
+livepatch-calc-objs += live-calc.o expression.o
+ccflags-y := -std=gnu11 -Wno-declaration-after-statement \
+	-Wall -W -Werror -Wno-unused-variable -Wno-unused-parameter
 
 GIT_HOOKS := .git/hooks/applied
 

@@ -451,6 +451,17 @@ static int not(int a)
     return FP2INT(!n, frac);
 }
 
+int fib(int a)
+{
+    if (EQUAL == compare(a, 0)) {
+        return 0;
+    } else if (EQUAL == compare(a, FP2INT(1, 0))) {
+        return FP2INT(1, 0);
+    }
+
+    return plus(fib(minus(a, FP2INT(1, 0))), fib(minus(a, FP2INT(2, 0))));
+}
+
 /* TODO: change logic */
 int expr_eval(struct expr *e)
 {

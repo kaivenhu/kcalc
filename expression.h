@@ -133,6 +133,8 @@ struct expr_var *expr_var(struct expr_var_list *vars,
                           const char *s,
                           size_t len);
 
+int fib(int a);
+
 int expr_eval(struct expr *e);
 
 #define EXPR_TOP (1 << 0)

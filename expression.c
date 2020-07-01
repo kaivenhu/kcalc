@@ -451,15 +451,31 @@ static int not(int a)
     return FP2INT(!n, frac);
 }
 
+#define FIB_MAX 40
+
 int fib(int a)
 {
-    if (EQUAL == compare(a, 0)) {
+    int i = 2;
+    int arr[FIB_MAX + 1] = {0};
+    const enum compare_type lt = LOWER | EQUAL;
+
+    if (GREATER == compare(a, FP2INT(FIB_MAX, 0))) {
+        pr_err("fib only support %d index\n", FIB_MAX);
+        return 0;
+    } else if (EQUAL == compare(a, 0)) {
         return 0;
     } else if (EQUAL == compare(a, FP2INT(1, 0))) {
         return FP2INT(1, 0);
     }
 
-    return plus(fib(minus(a, FP2INT(1, 0))), fib(minus(a, FP2INT(2, 0))));
+    arr[1] = FP2INT(1, 0);
+
+    while ((lt & compare(FP2INT(i, 0), a))) {
+        arr[i] = plus(arr[i - 1], arr[i - 2]);
+        ++i;
+    }
+
+    return arr[--i];
 }
 
 /* TODO: change logic */

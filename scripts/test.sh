@@ -70,14 +70,15 @@ test_op '$(number, 1), $(number, 2+3), number()' # should be 5
 
 # pre-defined function
 test_op 'nop()'
-test_op 'fib(10)'
+test_op 'fib(10+3*10)'
 
 # Livepatch
 sudo insmod $LIVEPATCH_CALC_MOD
 sleep 1
 echo "livepatch was applied"
 test_op 'nop()'
-test_op 'fib(10)'
+test_op 'fib(10+3*10)'
+test_op 'fib(10+3*10+1)'
 dmesg | tail -n 6
 echo "Disabling livepatch..."
 sudo sh -c "echo 0 > /sys/kernel/livepatch/livepatch_calc/enabled"

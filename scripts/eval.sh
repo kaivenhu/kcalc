@@ -14,6 +14,7 @@ fromfixed() {
     local ans=${2}
     local NAN_INT=31
     local INF_INT=47
+    local OVERFLOW=79
     local is_eq=0
     local scale=""
 
@@ -30,6 +31,10 @@ fromfixed() {
     elif [ "$ret" -eq "$INF_INT" ]
     then
         ret="INF_INT"
+        [[ "${ret}" == "${ans}" ]] && is_eq="1"
+    elif [ "$ret" -eq "${OVERFLOW}" ]
+    then
+        ret="OVERFLOW"
         [[ "${ret}" == "${ans}" ]] && is_eq="1"
     else
         ret="`echo \"${scale} $num*(10^$frac)\" | bc -l`"

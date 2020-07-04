@@ -6,10 +6,15 @@
 #include <linux/module.h>
 #include <linux/string.h>
 
-#define GET_NUM(n) ((n) >> 4)
-#define NAN_INT ((1 << 4) | ((1 << 4) - 1))
-#define INF_INT ((1 << 5) | ((1 << 4) - 1))
-#define MASK(n) (((n) > 0) << 4)
+#define FRAC_BIT (4)
+#define GET_NUM(n) ((n) >> (FRAC_BIT))
+#define NAN_INT ((1 << (FRAC_BIT)) | ((1 << (FRAC_BIT)) - 1))
+#define INF_INT ((1 << (FRAC_BIT + 1)) | ((1 << (FRAC_BIT)) - 1))
+#define OVERFLOW ((1 << (FRAC_BIT + 2)) | ((1 << (FRAC_BIT)) - 1))
+#define MASK(n) (((n) > 0) << (FRAC_BIT))
+#define MAX_FRAC ((1 << (FRAC_BIT - 1)) - 1)
+#define MIN_FRAC (~(MAX_FRAC))
+
 /*
  * LSB 4 bits for precision, 2^3, one for sign
  * MSB 28 bits for integer
@@ -32,6 +37,13 @@ static int GET_FRAC(int n)
 static int FP2INT(int n, int d)
 {
     while (n && n % 10 == 0) {
+        ++d;
+        n /= 10;
+    }
+    if (d > MAX_FRAC) {
+        return OVERFLOW;
+    }
+    while (d < MIN_FRAC) {
         ++d;
         n /= 10;
     }
@@ -254,6 +266,11 @@ static int divid(int a, int b)
         return NAN_INT;
     if (n2 == 0)
         return INF_INT;
+
+    if (n1 < 0) {
+        n1 = -n1;
+        n2 = -n2;
+    }
 
     while (n1 * 10 < ((1 << 25) - 1)) {
         --frac1;

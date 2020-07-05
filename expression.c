@@ -15,6 +15,9 @@
 #define MAX_FRAC ((1 << (FRAC_BIT - 1)) - 1)
 #define MIN_FRAC (~(MAX_FRAC))
 
+#define MAX_INT ((INT_MAX >> (FRAC_BIT)))
+#define MIN_INT ((INT_MIN >> (FRAC_BIT)))
+
 /*
  * LSB 4 bits for precision, 2^3, one for sign
  * MSB 28 bits for integer
@@ -382,6 +385,11 @@ static int minus(int a, int b)
             --frac2;
             n2 *= 10;
         }
+    }
+
+    if ((n1 != 0) && (((n2 < 0) && (n1 > (MAX_INT + n2))) ||
+                      ((n2 > 0) && (n1 < (MIN_INT + n2))))) {
+        return OVERFLOW;
     }
 
     n1 -= n2;

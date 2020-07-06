@@ -18,6 +18,8 @@
 #define MAX_INT ((INT_MAX >> (FRAC_BIT)))
 #define MIN_INT ((INT_MIN >> (FRAC_BIT)))
 
+#define GET_SIGN(n) ((n >> (31 - FRAC_BIT)) & 1)
+
 /*
  * LSB 4 bits for precision, 2^3, one for sign
  * MSB 28 bits for integer
@@ -254,9 +256,21 @@ static int mult(int a, int b)
     int frac2 = GET_FRAC(b);
     int n1 = GET_NUM(a);
     int n2 = GET_NUM(b);
-    int n3 = n1 * n2;
 
-    return FP2INT(n3, (frac1 + frac2));
+    if (GET_SIGN(n2)) {
+        n1 *= -1;
+        n2 *= -1;
+    }
+
+    if (GET_SIGN(n1) ^ GET_SIGN(n2)) {
+        if (n1 < MIN_INT / n2)
+            return OVERFLOW;
+    } else {
+        if (n1 > MAX_INT / n2)
+            return OVERFLOW;
+    }
+
+    return FP2INT(n1 * n2, (frac1 + frac2));
 }
 
 static int divid(int a, int b)

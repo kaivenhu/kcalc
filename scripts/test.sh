@@ -35,7 +35,21 @@ sudo chmod 0666 $CALC_DEV
 echo
 
 # multiply
-test_op '6*7'
+test_op '44739242*3'
+test_op '(-44739242)*(-3)'
+test_op '(-67108864)*2'
+test_op '(67108864)*(-2)'
+test_op '2*(-67108864)'
+test_op '(-2)*(67108864)'
+
+test_op '44739243*3' 'OVERFLOW'
+test_op '(-67108865)*2' 'OVERFLOW'
+test_op '(67108865)*(-2)' 'OVERFLOW'
+test_op '(-2)*(67108865)' 'OVERFLOW'
+test_op '(2)*(-67108865)' 'OVERFLOW'
+test_op '(134217727)*(134217727)' 'OVERFLOW'
+test_op '(-134217728)*(134217727)' 'OVERFLOW'
+test_op '(-134217728)*(-134217728)' 'OVERFLOW'
 
 # add
 test_op '1980+1'

@@ -365,6 +365,11 @@ static int plus(int a, int b)
         }
     }
 
+    if (((n1 > 0) && (n2 > (MAX_INT - n1))) ||
+        ((n1 < 0) && (n2 < (MIN_INT - n1)))) {
+        return OVERFLOW;
+    }
+
     n1 += n2;
 
     return FP2INT(n1, frac1);

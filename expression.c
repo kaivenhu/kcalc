@@ -323,12 +323,6 @@ static int remain(int a, int b)
     return FP2INT(n1, frac1);
 }
 
-static int right_shift(int a, int b)
-{
-    /* FIXME: should use 2-base? */
-    return divid(a, mult(2 << 4, b));
-}
-
 static int power(int a, int b)
 {
     int frac1 = GET_FRAC(a);
@@ -354,6 +348,12 @@ static int power(int a, int b)
         n1 *= on1;
     }
     return FP2INT(n1, frac1);
+}
+
+static int right_shift(int a, int b)
+{
+    /* FIXME: should use 2-base? */
+    return divid(a, power(2 << 4, b));
 }
 
 static int left_shift(int a, int b)

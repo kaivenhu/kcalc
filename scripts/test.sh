@@ -122,6 +122,7 @@ test_op '(3%0)|0' '0' # should be 0
 test_op '1+2<<3' '24' # should be (1 + 2) << 3 = 24
 test_op '123&42' '42' # should be 42
 test_op '123^42' '81' # should be 81
+test_op '16>>3'  '2'
 
 # parens
 test_op '(((3)))*(1+(2))' # should be 9

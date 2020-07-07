@@ -124,6 +124,14 @@ test_op '123&42' '42' # should be 42
 test_op '123^42' '81' # should be 81
 test_op '16>>3'  '2'
 
+# power
+test_op '3**0' '1'
+test_op '3**3' '27'
+test_op '30**3' '27000'
+test_op '0.03**3' '0.000027'
+test_op '1**1' '1'
+test_op '1**2' '1'
+
 # parens
 test_op '(((3)))*(1+(2))' # should be 9
 

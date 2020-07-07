@@ -343,6 +343,7 @@ static int power(int a, int b)
     int on1 = n1;
     int of1 = frac1;
     n1 = 1;
+    frac1 = 0;
     for (int i = 0; i < n2; ++i) {
         frac1 += of1;
         n1 *= on1;
